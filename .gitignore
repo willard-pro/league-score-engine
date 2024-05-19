@@ -133,3 +133,5 @@ hs_err_pid*
 target/
 build/
 
+# Maven shade plugin specific files
+dependency-reduced-pom.xml
