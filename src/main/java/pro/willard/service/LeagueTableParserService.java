@@ -7,22 +7,21 @@ import pro.willard.dto.TeamScoreDto;
 import pro.willard.exception.LeagueException;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class LeagueTableParser {
+public class LeagueTableParserService {
 
     private static final Pattern PATTERN = Pattern.compile("(.+?) (\\d+), (.+?) (\\d+)");
 
     public List<LeagueScoreDto> parseFile(String filePath) throws LeagueException {
+        log.debug("Parse file {}", filePath);
+
         List<LeagueScoreDto> leagueScoreDtos = new ArrayList<>();
         BufferedReader reader = null;
 
@@ -57,16 +56,19 @@ public class LeagueTableParser {
     }
 
     public LeagueScoreDto parseLine(String line) throws LeagueException {
-        Matcher matcher = PATTERN.matcher(line);
+        log.debug("Parse line {}", line);
 
+        Matcher matcher = PATTERN.matcher(line);
         if (matcher.matches()) {
             // Extract team names and scores using regex groups
-            String team1Name = matcher.group(1);
-            int team1Score = Integer.parseInt(matcher.group(2));
-            String team2Name = matcher.group(3);
-            int team2Score = Integer.parseInt(matcher.group(4));
+            String homeTeamName = matcher.group(1);
+            int homeTeamScore = Integer.parseInt(matcher.group(2));
+            String awayTeamName = matcher.group(3);
+            int awayTeamScore = Integer.parseInt(matcher.group(4));
 
-            return new LeagueScoreDto(new TeamScoreDto(team1Name, team1Score), new TeamScoreDto(team2Name, team2Score));
+            log.debug("{} {} vs {} {}", homeTeamName, homeTeamScore, awayTeamName, awayTeamScore);
+
+            return new LeagueScoreDto(new TeamScoreDto(homeTeamName, homeTeamScore), new TeamScoreDto(awayTeamName, awayTeamScore));
         } else {
             throw new LeagueException(String.format("Input '%s' does not match required pattern", line));
         }
