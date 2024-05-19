@@ -1,6 +1,6 @@
-# League Ranking Application
+# League Score Engine
 
-Welcome to the League Ranking Application!
+Welcome to the League Score Engine!
 
 ## Overview
 
