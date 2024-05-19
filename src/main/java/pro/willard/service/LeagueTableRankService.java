@@ -17,6 +17,8 @@ public class LeagueTableRankService {
     }
 
     public void update(LeagueScoreDto leagueScoreDto) {
+        log.debug("Updating rankings of {}", leagueScoreDto);
+
         String homeTeam = leagueScoreDto.getHome().getName();
         String awayTeam = leagueScoreDto.getAway().getName();
 
@@ -31,11 +33,15 @@ public class LeagueTableRankService {
 
         if (homeTeamScore > awayTeamScore) {
             rankBoard.put(homeTeam, homePoints+3);
+            log.debug("Team {} won and have {} points", homeTeam, rankBoard.get(homeTeam));
         } else if (homeTeamScore < awayTeamScore) {
             rankBoard.put(awayTeam, awayPoints+3);
+            log.debug("Team {} won and have {} points", awayTeam, rankBoard.get(awayTeam));
         } else {
             rankBoard.put(homeTeam, homePoints+1);
             rankBoard.put(awayTeam, awayPoints+1);
+
+            log.debug("Team {} and {} draw and have {} and {} points", homeTeam, awayTeam, rankBoard.get(homeTeam), rankBoard.get(awayTeam));
         }
     }
 

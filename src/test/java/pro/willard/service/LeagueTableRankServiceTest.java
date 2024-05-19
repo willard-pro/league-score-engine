@@ -53,8 +53,8 @@ public class LeagueTableRankServiceTest {
         assertEquals(1, updatedRankBoard.get("AwayTeam"));
     }
 
-    void testUpdateList() {
-        // Given
+    @Test
+    void testUpdate() {
         List<LeagueScoreDto> scores = Arrays.asList(
                 new LeagueScoreDto(new TeamScoreDto("Lions", 3), new TeamScoreDto("Snakes", 3)),
                 new LeagueScoreDto(new TeamScoreDto("Tarantulas", 1), new TeamScoreDto("FC Awesome", 0)),
@@ -63,15 +63,13 @@ public class LeagueTableRankServiceTest {
                 new LeagueScoreDto(new TeamScoreDto("Lions", 4), new TeamScoreDto("Grouches", 0))
         );
 
-        // When
         rankService.update(scores);
         Map<String, Integer> rankBoard = rankService.getRankBoard();
 
-        // Then
         assertEquals(5, rankBoard.get("Lions"));
         assertEquals(1, rankBoard.get("Snakes"));
         assertEquals(6, rankBoard.get("Tarantulas"));
-        assertEquals(3, rankBoard.get("FC Awesome"));
+        assertEquals(1, rankBoard.get("FC Awesome"));
         assertEquals(0, rankBoard.get("Grouches"));
     }
 }
