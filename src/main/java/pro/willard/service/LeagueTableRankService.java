@@ -3,9 +3,7 @@ package pro.willard.service;
 import lombok.extern.slf4j.Slf4j;
 import pro.willard.dto.LeagueScoreDto;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class LeagueTableRankService {
@@ -47,5 +45,47 @@ public class LeagueTableRankService {
 
     public Map<String, Integer> getRankBoard() {
         return rankBoard;
+    }
+
+    public String printRankBoard() {
+        StringBuffer buffer = new StringBuffer();
+
+        // Sort the rank board by value (points)
+        List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(rankBoard.entrySet());
+
+        sortedEntries.sort((e1, e2) -> {
+            // Compare points first
+            int compare = e2.getValue().compareTo(e1.getValue());
+            if (compare != 0) {
+                return compare;
+            }
+
+            // If points are equal, compare team names
+            return e1.getKey().compareTo(e2.getKey());
+        });
+
+        int rank = 1;
+        int previousPoints = Integer.MAX_VALUE; // Initialize to a large value
+
+        for (Map.Entry<String, Integer> entry : sortedEntries) {
+            String teamName = entry.getKey();
+            int points = entry.getValue();
+
+            // Check if the points are different from the previous entry
+            if (points != previousPoints) {
+                // Update the rank if points are different
+                rank = sortedEntries.indexOf(entry) + 1;
+            }
+
+            // Print the rank, team name, and points in the desired format
+            buffer.append(rank + ". " + teamName + ", " + points + " pts\n");
+
+            // Update the previous points value
+            previousPoints = points;
+        }
+
+        buffer.deleteCharAt(buffer.length()-1); //deletes the last newline character
+
+        return buffer.toString();
     }
 }
