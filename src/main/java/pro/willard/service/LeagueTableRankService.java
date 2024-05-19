@@ -61,6 +61,7 @@ public class LeagueTableRankService {
             try {
                 inputStream = classLoader.getResourceAsStream("banner.txt");
                 buffer.append(IOUtils.toString(inputStream));
+                buffer.append("╔════╦════════════════════════╦═════╗\n");
             } finally {
                 IOUtils.closeQuietly(inputStream);
             }
@@ -95,7 +96,7 @@ public class LeagueTableRankService {
 
             // Print the rank, team name, and points in the desired format
             if (pretty) {
-                buffer.append(String.format("║ %3d ║ %-23s ║ %7d ║\n", rank, teamName, points));
+                buffer.append(String.format("║ %-2d ║ %-22s ║ %3d ║\n", rank, teamName, points));
             } else {
                 buffer.append(rank + ". " + teamName + ", " + points + " pts\n");
             }
@@ -104,7 +105,9 @@ public class LeagueTableRankService {
             previousPoints = points;
         }
 
-        buffer.deleteCharAt(buffer.length()-1); //deletes the last newline character
+        if (pretty) {
+            buffer.append("╚════╩════════════════════════╩═════╝");
+        }
 
         return buffer.toString();
     }
