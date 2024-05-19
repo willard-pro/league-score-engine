@@ -23,8 +23,11 @@ public class LeagueTableRankService {
         int homeTeamScore = leagueScoreDto.getHome().getScore();
         int awayTeamScore = leagueScoreDto.getAway().getScore();
 
-        int homePoints = rankBoard.putIfAbsent(homeTeam, 0);
-        int awayPoints = rankBoard.putIfAbsent(awayTeam, 0);
+        rankBoard.putIfAbsent(homeTeam, 0);
+        rankBoard.putIfAbsent(awayTeam, 0);
+
+        int homePoints = rankBoard.get(homeTeam);
+        int awayPoints = rankBoard.get(awayTeam);
 
         if (homeTeamScore > awayTeamScore) {
             rankBoard.put(homeTeam, homePoints+3);
@@ -38,9 +41,5 @@ public class LeagueTableRankService {
 
     public Map<String, Integer> getRankBoard() {
         return rankBoard;
-    }
-
-    public void display() {
-
     }
 }
