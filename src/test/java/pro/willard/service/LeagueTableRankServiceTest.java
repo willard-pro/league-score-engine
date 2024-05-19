@@ -74,7 +74,7 @@ public class LeagueTableRankServiceTest {
     }
 
     @Test
-    void testPrintRankBoard() {
+    void testPrintRankBoard() throws Exception {
         Map<String, Integer> rankBoard = service.getRankBoard();
 
         // Populate rank board with sample data
@@ -85,7 +85,7 @@ public class LeagueTableRankServiceTest {
         rankBoard.put("Grouches", 0);
 
         // Call the method to test
-        String actual = service.printRankBoard();
+        String actual = service.printRankBoard(false);
 
         // Expected output
         String expected = "1. Tarantulas, 6 pts\n" +

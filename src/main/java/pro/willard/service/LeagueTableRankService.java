@@ -1,8 +1,12 @@
 package pro.willard.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import pro.willard.dto.LeagueScoreDto;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Slf4j
@@ -47,8 +51,20 @@ public class LeagueTableRankService {
         return rankBoard;
     }
 
-    public String printRankBoard() {
+    public String printRankBoard(boolean pretty) throws IOException {
         StringBuffer buffer = new StringBuffer();
+
+        if (pretty) {
+            ClassLoader classLoader = getClass().getClassLoader();
+
+            InputStream inputStream = null;
+            try {
+                inputStream = classLoader.getResourceAsStream("banner.txt");
+                buffer.append(IOUtils.toString(inputStream));
+            } finally {
+                IOUtils.closeQuietly(inputStream);
+            }
+        }
 
         // Sort the rank board by value (points)
         List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(rankBoard.entrySet());
@@ -78,7 +94,11 @@ public class LeagueTableRankService {
             }
 
             // Print the rank, team name, and points in the desired format
-            buffer.append(rank + ". " + teamName + ", " + points + " pts\n");
+            if (pretty) {
+                buffer.append(String.format("║ %3d ║ %-23s ║ %7d ║\n", rank, teamName, points));
+            } else {
+                buffer.append(rank + ". " + teamName + ", " + points + " pts\n");
+            }
 
             // Update the previous points value
             previousPoints = points;
