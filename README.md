@@ -46,22 +46,32 @@ This application is built using [Java 8](https://www.java.com/en/) and [Maven](h
 
 Follow these steps to build and run the application from the command line interface (CLI):
 
+### Logging
+
+By default, __DEBUG__ logging is enabled, to disable this update [logback.xml](./src/main/resources/logback.xml)
+
 ### Build
 
 1. Open your CLI.
-2. Navigate to the root directory of the application.
-3. Execute the following command to build the application:
+2. Execute the following command to build the application:
 
 
     mvn clean install
 
 ### Run
 
-1. After successfully building the application, navigate to the target directory.
+1. After successfully building the application, navigate to the _target_ directory.
 2. Execute the following command to run the application:
 
 
-    java -jar <application-name>.jar
+    java -jar lse-1.0-SNAPSHOT.jar
+
+#### Arguments
+
+If no arguments are specified, the application will request a user to enter the results of the matches on the CLI. 
+
+1. --pretty, if specified it will print the rank board using ASCII art
+2. --file=<filename>, if specified will parse the results from the provided file
 
 
 ## Feedback
